@@ -32,13 +32,13 @@ struct PeopleListView: View {
                     }
                 }
                 
-                ForEach(personViewModel.people, id: \.id) { item in
+                ForEach(personViewModel.filteredPeople, id: \.id) { item in
                     VStack {
                         Image(systemName: "person.circle")
                             .resizable()
                             .frame(width: 70, height: 70)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundColor(.green)
+                            .foregroundColor(item.color)
                         Text(item.name)
                             .font(.caption)
                     }
@@ -57,5 +57,5 @@ struct PeopleListView: View {
 }
 
 #Preview {
-    PeopleListView(personViewModel: .init())
+//    PeopleListView(personViewModel: .init())
 }

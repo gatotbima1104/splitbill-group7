@@ -12,7 +12,6 @@ struct AssignBillView: View {
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
     
-    @State private var search: String = ""
     
     var body: some View {
         VStack {
@@ -21,7 +20,7 @@ struct AssignBillView: View {
             TitleView(text: "Bill Title")
             
             // Search bar
-            SearctBarView(search: $search)
+            SearctBarView(search: $personViewModel.searchText)
             
             // List Person
             PeopleListView(personViewModel: personViewModel)
@@ -46,5 +45,5 @@ struct AssignBillView: View {
 
 
 #Preview {
-    AssignBillView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel())
+//    AssignBillView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel(), search: "")
 }
