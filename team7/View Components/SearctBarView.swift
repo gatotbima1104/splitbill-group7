@@ -19,7 +19,7 @@ struct SearctBarView: View {
                 .autocapitalization(.none)
         }
         .padding()
-        .background(Color.gray.opacity(0.2))
+        .background(Color.gray.opacity(0.1))
         .cornerRadius(10)
     }
 }
