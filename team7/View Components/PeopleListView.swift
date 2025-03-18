@@ -16,7 +16,7 @@ struct PeopleListView: View {
         
         // People list
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: 16) {
                 // First item as "Add"
                 Button(action: {
                     isAddPersonViewPresented = true
@@ -24,11 +24,13 @@ struct PeopleListView: View {
                     VStack {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
-                            .frame(width: 70, height: 70)
+                            .frame(width: 60, height: 60)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .foregroundColor(.gray)
+                            
                         Text("Add")
                             .font(.caption)
+                            .fontWeight(.regular)
                     }
                 }
                 
@@ -36,12 +38,18 @@ struct PeopleListView: View {
                     VStack {
                         Image(systemName: "person.circle")
                             .resizable()
-                            .frame(width: 70, height: 70)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundColor(.green)
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(.gray)
+                            .padding(3)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle().stroke(Color.green, lineWidth: 3)
+                            )
                         Text(item.name)
                             .font(.caption)
-                    }
+                            .fontWeight(.regular)
+                    }.padding(.vertical)
                 }
             }
         }

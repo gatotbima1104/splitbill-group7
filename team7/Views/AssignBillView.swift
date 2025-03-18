@@ -12,6 +12,8 @@ struct AssignBillView: View {
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
     
+    
+    @State private var isAddTransactionPresented: Bool = false
     @State private var search: String = ""
     
     var body: some View {
@@ -32,15 +34,25 @@ struct AssignBillView: View {
             Spacer()
 
             HStack {
-                ButtonView(text: "Add", color: .blue){
-                }
-                Spacer ()
-                ButtonView(text: "Next", color: .green){
+                Button(action: {
+                    isAddTransactionPresented = true
+                }){
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
             }
             Spacer()
         }
         .safeAreaPadding(.all)
+        .sheet(isPresented: $isAddTransactionPresented, content: {
+            AddBillView(billViewModel: billViewModel)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        })
     }
 }
 

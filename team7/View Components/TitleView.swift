@@ -13,9 +13,10 @@ struct TitleView: View {
     
     var body: some View {
         Text(text)
-            .font(.title)
+            .font(.headline)
+            .fontWeight(.semibold)
         Divider()
-            .frame(height: 1)
+            .fontWeight(.semibold)
             .background(Color.black)
             .padding(.bottom)
     }
