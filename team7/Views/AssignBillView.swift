@@ -11,9 +11,7 @@ struct AssignBillView: View {
     
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
-    
-    @State private var search: String = ""
-    
+
     var body: some View {
         VStack {
             
@@ -21,7 +19,7 @@ struct AssignBillView: View {
             TitleView(text: "Bill Title")
             
             // Search bar
-            SearctBarView(search: $search)
+            SearctBarView(search: $personViewModel.searchText)
             
             // List Person
             PeopleListView(personViewModel: personViewModel)
@@ -32,10 +30,14 @@ struct AssignBillView: View {
             Spacer()
 
             HStack {
-                ButtonView(text: "Add", color: .blue){
-                }
-                Spacer ()
-                ButtonView(text: "Next", color: .green){
+                Button(action: {
+                }){
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
             }
             Spacer()

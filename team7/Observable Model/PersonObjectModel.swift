@@ -21,6 +21,19 @@ class PersonObjectModel: ObservableObject {
         PersonModel(name: "Jeky"),
     ]
     
+    
+    @Published var searchText: String = ""
+
+        // Computed property to filter people based on searchText
+        var filteredPeople: [PersonModel] {
+            if searchText.isEmpty {
+                return people
+            } else {
+                return people.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            }
+        }
+    
+    
     func addPerson(name: String) {
         people.append(PersonModel(name: name))
     }

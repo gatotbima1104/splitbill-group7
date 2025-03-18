@@ -17,8 +17,11 @@ struct SearctBarView: View {
             TextField("Search People here ", text: $search)
                 .autocorrectionDisabled()
                 .autocapitalization(.none)
+                .font(.subheadline)
+                .fontWeight(.regular)
         }
-        .padding()
+        .padding(.vertical, 10)
+        .padding(.horizontal)
         .background(Color.gray.opacity(0.1))
         .cornerRadius(10)
     }
