@@ -34,7 +34,7 @@ struct PeopleListView: View {
                     }
                 }
                 
-                ForEach(personViewModel.people, id: \.id) { item in
+                ForEach(personViewModel.filteredPeople, id: \.id) { item in
                     VStack {
                         Image(systemName: "person.circle")
                             .resizable()
@@ -46,6 +46,7 @@ struct PeopleListView: View {
                             .overlay(
                                 Circle().stroke(Color.green, lineWidth: 3)
                             )
+                            .foregroundColor(item.color)
                         Text(item.name)
                             .font(.caption)
                             .fontWeight(.regular)

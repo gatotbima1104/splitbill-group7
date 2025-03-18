@@ -11,11 +11,7 @@ struct AssignBillView: View {
     
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
-    
-    
-    @State private var isAddTransactionPresented: Bool = false
-    @State private var search: String = ""
-    
+
     var body: some View {
         VStack {
             
@@ -23,7 +19,7 @@ struct AssignBillView: View {
             TitleView(text: "Bill Title")
             
             // Search bar
-            SearctBarView(search: $search)
+            SearctBarView(search: $personViewModel.searchText)
             
             // List Person
             PeopleListView(personViewModel: personViewModel)
@@ -35,7 +31,6 @@ struct AssignBillView: View {
 
             HStack {
                 Button(action: {
-                    isAddTransactionPresented = true
                 }){
                     Text("Next")
                         .frame(maxWidth: .infinity)
@@ -48,11 +43,6 @@ struct AssignBillView: View {
             Spacer()
         }
         .safeAreaPadding(.all)
-        .sheet(isPresented: $isAddTransactionPresented, content: {
-            AddBillView(billViewModel: billViewModel)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
-        })
     }
 }
 

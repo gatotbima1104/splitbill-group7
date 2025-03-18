@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PersonModel: Identifiable {
     var id: UUID = UUID()
@@ -13,4 +14,13 @@ struct PersonModel: Identifiable {
     var paymentMethod: String?
     var paymentNumber: Int?
     var createdAt: Date = Date()
-}
+    
+    var color: Color {
+        return PersonModel.colorForName(name)
+    }
+    
+    private static func colorForName(_ name: String) -> Color {
+        let colors: [Color] = [.red, .blue, .green, .orange, .purple, .pink, .yellow]
+        let hashValue = abs(name.hashValue) % colors.count // Ensure positive Int
+        return colors[hashValue]
+    }}
