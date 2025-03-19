@@ -13,36 +13,48 @@ struct AssignBillView: View {
     @ObservedObject var billViewModel: BillObjectModel
 
     var body: some View {
-        VStack {
-            
-            // People
-            TitleView(text: "Bill Title")
-            
-            // Search bar
-            SearctBarView(search: $personViewModel.searchText)
-            
-            // List Person
-            PeopleListView(personViewModel: personViewModel)
-            Spacer()
-            
-            // transaction list
-            TransactionListView(billViewModel: billViewModel)
-            Spacer()
-
-            HStack {
-                Button(action: {
-                }){
-                    Text("Next")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+        NavigationStack {
+            VStack {
+                
+                // People
+                TitleView(text: "Bill Title")
+                
+                VStack {
+                    // Search bar
+                    SearctBarView(search: $personViewModel.searchText)
+                    
+                    // List Person
+                    PeopleListView(personViewModel: personViewModel)
                 }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
+                .background(Color.white)
+                .cornerRadius(15)
+                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+                
+                Spacer()
+                
+                // transaction list
+                TransactionListView(billViewModel: billViewModel, personViewModel: personViewModel)
+                
+                Spacer()
+
+                NavigationLink (destination: SplitBillView()) {
+                    Button(action: {
+                      }){
+                      Text("Next")
+                          .frame(maxWidth: .infinity)
+                          .padding()
+                          .background(Color("Blue"))
+                          .foregroundColor(.white)
+                          .cornerRadius(10)
+                      }
+                      .allowsHitTesting(false)
+                }
+                Spacer()
             }
-            Spacer()
+            .safeAreaPadding(.all)
         }
-        .safeAreaPadding(.all)
     }
 }
 

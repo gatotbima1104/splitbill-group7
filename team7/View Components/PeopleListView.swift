@@ -12,51 +12,71 @@ struct PeopleListView: View {
     @ObservedObject var personViewModel: PersonObjectModel
     @State var isAddPersonViewPresented: Bool = false
     
+    // Generate a random color based on the user's ID
+    func randomColor(for id: UUID) -> Color {
+        let colors: [Color] = [.red, .green, .orange, .purple, .pink, .yellow]
+        return colors[id.hashValue % colors.count] // Assign a consistent color
+    }
+    
     var body: some View {
         
         // People list
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
+            HStack(spacing: 10) {
                 // First item as "Add"
                 Button(action: {
                     isAddPersonViewPresented = true
                 }) {
                     VStack {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: "plus.circle")
                             .resizable()
                             .frame(width: 60, height: 60)
+                            .padding(3)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color("ShadedBlue"))
                             
                         Text("Add")
                             .font(.caption)
                             .fontWeight(.regular)
+                            .foregroundStyle(Color("ShadedBlue"))
                     }
                 }
                 
                 ForEach(personViewModel.filteredPeople, id: \.id) { item in
                     VStack {
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .foregroundColor(.gray)
-                            .padding(3)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                            .overlay(
-                                Circle().stroke(Color.green, lineWidth: 3)
-                            )
-                            .foregroundColor(item.color)
+                        ZStack {
+                            Circle()
+                                .fill(item.color.opacity(0.7))
+                                .frame(width: 60, height: 60)
+                                .overlay(
+                                    Circle()
+                                        .stroke(
+                                            personViewModel.isUserSelected == item.id ? Color.blue : Color.clear,
+                                            lineWidth: 5
+                                        )
+                                )
+                            
+                            // First letter of the name
+                            Text(item.name.prefix(1))
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
+                        
                         Text(item.name)
                             .font(.caption)
                             .fontWeight(.regular)
-                    }.padding(.vertical)
+                    }
+                    .onTapGesture {
+                        personViewModel.selecPerson(id: item.id)
+                    }
+                    .padding(.vertical, 5)
                 }
             }
         }
-        .frame(height: 120)
+        .frame(height: 80)
         .padding(.horizontal, 5)
-        .padding(.bottom, 28)
+        .padding(.bottom, 10)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddPersonView(peopleViewModel: personViewModel)
                 .presentationDetents([.medium])

@@ -1,17 +1,16 @@
 //
-//  AddBillView.swift
+//  AddAdditionaFeeView.swift
 //  team7
 //
-//  Created by Muhamad Gatot Supiadin on 18/03/25.
+//  Created by Muhamad Gatot Supiadin on 19/03/25.
 //
-
 
 import SwiftUI
 
-struct AddBillView: View {
+struct AddAdditionaFeeView: View {
     
-    @State private var newBillName: String = ""
-    @State private var newBillPrice: String = ""
+    @State private var newTax: String = ""
+    @State private var newAdditionalFee: String = ""
     
     @ObservedObject var billViewModel: BillObjectModel
     @Environment(\.dismiss) var dismiss // Used to close the sheet
@@ -20,20 +19,21 @@ struct AddBillView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Name", text: $newBillName)
+                    TextField("%", text: $newTax)
+                        .keyboardType(.decimalPad)
                         .autocorrectionDisabled()
                 } header: {
-                    Text("Enter The Name")
+                    Text("Enter The Tax %")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .fontWeight(.bold)
                 }
                 
                 Section {
-                    TextField("Price", text: $newBillPrice)
+                    TextField("Additional Fee", text: $newAdditionalFee)
                         .keyboardType(.decimalPad)
                 } header: {
-                    Text("Enter The Price")
+                    Text("Enter The Fee")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .fontWeight(.bold)
@@ -51,10 +51,8 @@ struct AddBillView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        billViewModel.addBill(name: newBillName, price: Double(newBillPrice) ?? 0)
                         dismiss()
                     }
-                    .disabled(newBillName.isEmpty || newBillPrice.isEmpty)
                 }
             }
         }

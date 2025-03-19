@@ -17,7 +17,14 @@ struct AddPersonView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Name", text: $newPerson)
+                Section {
+                    TextField("Name", text: $newPerson)
+                } header: {
+                    Text("Enter The Name")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .fontWeight(.bold)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -25,12 +32,18 @@ struct AddPersonView: View {
                         dismiss() // Dismiss the sheet
                     }
                 }
+                ToolbarItem(placement: .principal) { 
+                    Text("Add People")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
                         peopleViewModel.addPerson(name: newPerson)
                         dismiss()
                     }
                     .disabled(newPerson.isEmpty)
+                    .foregroundStyle(newPerson.isEmpty ? Color.gray : Color.blue)
                 }
             }
         }

@@ -11,7 +11,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            NavigationLink(destination: AssignBillView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel())) {
+            NavigationLink(destination: HomeView(historyViewModel: HistoryObjectModel(), billViewModel: BillObjectModel(), personViewModel: PersonObjectModel())) {
                 Text ("Hello World")
             }
         }

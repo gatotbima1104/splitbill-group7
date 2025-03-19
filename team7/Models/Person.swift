@@ -14,6 +14,7 @@ struct PersonModel: Identifiable {
     var paymentMethod: String?
     var paymentNumber: Int?
     var createdAt: Date = Date()
+    var bills: [BillModel] = []
     
     var color: Color {
         return PersonModel.colorForName(name)

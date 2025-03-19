@@ -10,11 +10,12 @@ import SwiftUI
 struct SearctBarView: View {
     
     @Binding var search: String
+    @State var placeholder: String = "Search People here "
     
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-            TextField("Search People here ", text: $search)
+            TextField(placeholder, text: $search)
                 .autocorrectionDisabled()
                 .autocapitalization(.none)
                 .font(.subheadline)

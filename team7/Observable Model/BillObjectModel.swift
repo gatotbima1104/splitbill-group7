@@ -17,7 +17,18 @@ class BillObjectModel: ObservableObject {
         BillModel(name: "Tempe", price: 2000)
     ]
     
+    @Published var searchText: String = ""
+    
     func addBill(name: String, price: Double) {
         bills.append(BillModel(name: name, price: price))
+    }
+    
+    // Computed property to filter people based on searchText
+    var filteredBills: [BillModel] {
+        if searchText.isEmpty {
+            return bills
+        } else {
+            return bills.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
     }
 }
