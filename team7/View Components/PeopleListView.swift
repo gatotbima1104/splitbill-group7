@@ -57,13 +57,21 @@ struct PeopleListView: View {
                                 )
                             
                             // First letter of the name
-                            Text(item.name.prefix(1))
+                            Text(item.name.prefix(1).uppercased())
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
+                            
+                            if !item.bills.isEmpty {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.white)
+                                    .background(Circle().fill(Color.green))
+                                    .frame(width: 18, height: 18)
+                                    .offset(x: 20, y: 20) // Position the checkmark at the bottom-right corner
+                            }
                         }
                         
-                        Text(item.name)
+                        Text(item.name.capitalized)
                             .font(.caption)
                             .fontWeight(.regular)
                     }
