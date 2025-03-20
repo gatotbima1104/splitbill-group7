@@ -213,3 +213,8 @@ struct TransactionListView: View {
         }
     }
 }
+
+
+#Preview {
+    TransactionListView(billViewModel: .init(), personViewModel: .init())
+}

@@ -11,6 +11,7 @@ import SwiftUI
 struct PersonModel: Identifiable {
     var id: UUID = UUID()
     var name: String
+    var isPaid : Bool = false
     var paymentMethod: String?
     var paymentNumber: Int?
     var createdAt: Date = Date()

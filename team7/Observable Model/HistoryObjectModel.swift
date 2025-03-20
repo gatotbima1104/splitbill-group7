@@ -8,6 +8,7 @@
 import Foundation
 
 class HistoryObjectModel: ObservableObject {
+    
     @Published var historyObjects: [HistoryModel] = [
         HistoryModel(name: "Top 100", total: 250000, people: [
             PersonModel(name: "Isa", bills: [

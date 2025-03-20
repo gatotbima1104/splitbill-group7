@@ -26,7 +26,8 @@ struct HomeView: View {
                         ListNotFound(text: "No Bills Yet", size: 150, spacing: 50)
                     } else {
                         ForEach(historyViewModel.historyObjects, id: \.id){ history in
-                            NavigationLink (destination: HistoryView()){
+                            NavigationLink (destination: HistoryView(history:history).navigationTitle(history.name)
+){
                                 HStack {
                                     VStack (alignment: .leading, spacing: 10) {
                                         Text(history.name)
