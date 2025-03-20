@@ -110,7 +110,7 @@ struct TransactionListView: View {
                                         .font(.footnote)
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(.systemGray))
-                                    Text("x 1")
+                                    Text("x \(personViewModel.people.filter { $0.bills.contains(where: { $0.id == bill.id }) }.count)")
                                         .font(.footnote)
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(.systemGray))
@@ -121,7 +121,9 @@ struct TransactionListView: View {
                                 
                                 VStack {
                                     VStack(alignment: .trailing, spacing: 5) {
-                                        let people = ["Gatot"]
+                                        let people = personViewModel.people
+                                            .filter { $0.bills.contains(where: { $0.id == bill.id }) }
+                                            .map { $0.name }
 
                                         LazyVGrid(
                                             columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: min(people.count, 3)),
@@ -130,7 +132,7 @@ struct TransactionListView: View {
                                             ForEach(people.reversed(), id: \.self) { person in
                                                 HStack {
                                                     Spacer()
-                                                    Text(person)
+                                                    Text(person.prefix(1))
                                                         .frame(minWidth: 30)
                                                         .lineLimit(1)
                                                         .truncationMode(.tail)
@@ -170,25 +172,6 @@ struct TransactionListView: View {
                         .listStyle(PlainListStyle())
                         .padding(.horizontal, 0)
 
-            HStack {
-                Image(systemName: "plus")
-                Text("Add Additional Fee")
-                    .font(.footnote)
-                    .fontWeight(.regular)
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.blue, lineWidth: 2)
-            )
-            .foregroundColor(.blue)
-            .foregroundColor(Color("ShadedBlue"))
-            .cornerRadius(8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .onTapGesture {
-                isAddAdditionalFee = true
-            }
         }
         .padding()
         .background(Color.white)
@@ -206,6 +189,27 @@ struct TransactionListView: View {
         }
         .onChange(of: personViewModel.isUserSelected) {
             updateSelectedBills() // Reset selection when switching users
+        }
+        
+        // Additional fee container
+        HStack {
+            Image(systemName: "plus")
+            Text("Add Additional Fee")
+                .font(.footnote)
+                .fontWeight(.regular)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 4)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.blue, lineWidth: 2)
+        )
+        .foregroundColor(.blue)
+        .foregroundColor(Color("ShadedBlue"))
+        .cornerRadius(8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .onTapGesture {
+            isAddAdditionalFee = true
         }
     }
 }

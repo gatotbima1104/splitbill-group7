@@ -14,11 +14,11 @@ class PersonObjectModel: ObservableObject {
         PersonModel(name: "Isa"),
         PersonModel(name: "Ananta"),
         PersonModel(name: "Mario"),
-        PersonModel(name: "Yudha"),
-        PersonModel(name: "Musafa"),
-        PersonModel(name: "Naela"),
-        PersonModel(name: "Gilang"),
-        PersonModel(name: "Jeky"),
+//        PersonModel(name: "Yudha"),
+//        PersonModel(name: "Musafa"),
+//        PersonModel(name: "Naela"),
+//        PersonModel(name: "Gilang"),
+//        PersonModel(name: "Jeky"),
     ]
     
     
