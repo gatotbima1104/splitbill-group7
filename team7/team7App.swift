@@ -11,7 +11,8 @@ import SwiftUI
 struct team7App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            ContentView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel(), historyViewModel: HistoryObjectModel())
         }
     }
 }

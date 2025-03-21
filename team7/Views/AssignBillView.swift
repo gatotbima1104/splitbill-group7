@@ -11,13 +11,36 @@ struct AssignBillView: View {
     
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
+    @State var billsName: String = ""
+    
+    // check if at least one person has bills to enable next btn
+    var isNextButtonDisabled: Bool {
+        return personViewModel.filteredPeople.allSatisfy { $0.bills.isEmpty }
+    }
+
 
     var body: some View {
         NavigationStack {
             VStack {
                 
                 // People
-                TitleView(text: "Bill Title")
+                // Title named
+                HStack{
+                    TextField("Bill Title", text: $billsName)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .frame(width: 150)
+                        .textFieldStyle(.plain)
+                        .autocorrectionDisabled(true)
+                        .multilineTextAlignment(.center)
+                    
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                
+                Divider()
+                    .fontWeight(.semibold)
+                    .background(Color.black)
+                    .padding(.bottom)
                 
                 VStack {
                     // Search bar
@@ -39,18 +62,14 @@ struct AssignBillView: View {
                 
                 Spacer()
 
-                NavigationLink (destination: SplitBillView()) {
-                    Button(action: {
-                      }){
-                      Text("Next")
-                          .frame(maxWidth: .infinity)
-                          .padding()
-                          .background(Color("Blue"))
-                          .foregroundColor(.white)
-                          .cornerRadius(10)
-                      }
-                      .allowsHitTesting(false)
-                }
+                NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills)).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(!isNextButtonDisabled ? Color("Blue") : Color("Blue").opacity(0.5))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }.disabled(isNextButtonDisabled)
                 Spacer()
             }
             .safeAreaPadding(.all)
