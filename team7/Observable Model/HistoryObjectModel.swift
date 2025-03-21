@@ -8,8 +8,9 @@
 import Foundation
 
 class HistoryObjectModel: ObservableObject {
+    
     @Published var historyObjects: [HistoryModel] = [
-        HistoryModel(name: "Top 100", total: 250000, people: [
+        HistoryModel(name: "Top 100", people: [
             PersonModel(name: "Isa", bills: [
                 BillModel(name: "Es Teh", price: 5000),
                 BillModel(name: "Nasi Goreng", price: 10000)
@@ -29,7 +30,7 @@ class HistoryObjectModel: ObservableObject {
             BillModel(name: "Nasi Ayam", price: 20000)
         ]),
 
-        HistoryModel(name: "Weekend Hangout", total: 185000, people: [
+        HistoryModel(name: "Weekend Hangout", people: [
             PersonModel(name: "Aldi", bills: [
                 BillModel(name: "Kopi Hitam", price: 15000),
                 BillModel(name: "Roti Bakar", price: 12000)
@@ -51,7 +52,7 @@ class HistoryObjectModel: ObservableObject {
             BillModel(name: "French Fries", price: 25000)
         ]),
 
-        HistoryModel(name: "Office Lunch", total: 310000, people: [
+        HistoryModel(name: "Office Lunch", people: [
             PersonModel(name: "Budi", bills: [
                 BillModel(name: "Soto Ayam", price: 25000),
                 BillModel(name: "Teh Manis", price: 5000)
@@ -79,7 +80,7 @@ class HistoryObjectModel: ObservableObject {
             BillModel(name: "Es Teh", price: 5000)
         ]),
 
-        HistoryModel(name: "Birthday Party", total: 500000, people: [
+        HistoryModel(name: "Birthday Party", people: [
             PersonModel(name: "Fajar", bills: [
                 BillModel(name: "Pizza", price: 75000),
                 BillModel(name: "Soft Drink", price: 15000)
