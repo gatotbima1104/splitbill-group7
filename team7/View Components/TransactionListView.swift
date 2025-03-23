@@ -166,6 +166,7 @@ struct TransactionListView: View {
                         .listRowInsets(EdgeInsets())
                         
                     }
+                    .onDelete(perform: billViewModel.removeBill)
                     
                 }
             }

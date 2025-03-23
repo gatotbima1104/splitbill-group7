@@ -19,6 +19,7 @@ struct AddPersonView: View {
             Form {
                 Section {
                     TextField("Name", text: $newPerson)
+                        .autocorrectionDisabled(true)
                 } header: {
                     Text("Enter The Name")
                         .font(.caption)
