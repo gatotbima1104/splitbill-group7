@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct AssignBillView: View {
-    
+    @State private var shouldNavigate = false
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
+    @ObservedObject var historyViewModel: HistoryObjectModel
     @State var billsName: String = ""
+    
+    @State var addedHistory : HistoryModel? = nil
     
     // check if at least one person has bills to enable next btn
     var isNextButtonDisabled: Bool {
@@ -61,8 +64,24 @@ struct AssignBillView: View {
                 TransactionListView(billViewModel: billViewModel, personViewModel: personViewModel)
                 
                 Spacer()
+                
+                Button(action: {
+                    // Example: Validate input, save data, update state
+                    if billsName.isEmpty {
+                        billsName = generateTitle(name: "SplitBill")
+                    }
+                    addedHistory = HistoryModel(
+                        name: billsName,
+                        people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
+                        bills: billViewModel.bills
+                    )
 
-                NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills)).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
+                    // add to history list
+                    historyViewModel.historyObjects.append(addedHistory!)
+                    // Navigate after action
+                
+                    shouldNavigate = true
+                }){
                     Text("Next")
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -70,6 +89,21 @@ struct AssignBillView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }.disabled(isNextButtonDisabled)
+                    .navigationDestination(isPresented: $shouldNavigate) {
+                                       HistoryView(
+                                        history: addedHistory ?? HistoryModel(
+                                            name: billsName,
+                                            people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
+                                            bills: billViewModel.bills
+                                        ),
+                                           historyViewModel: historyViewModel
+                                       )
+                                       .navigationTitle(billsName)
+                                   }
+
+                NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills),historyViewModel: historyViewModel).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
+                   
+                }
                 Spacer()
             }
             .safeAreaPadding(.all)
@@ -79,5 +113,5 @@ struct AssignBillView: View {
 
 
 #Preview {
-    AssignBillView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel())
+    AssignBillView(personViewModel: PersonObjectModel(), billViewModel: BillObjectModel(),historyViewModel: .init())
 }

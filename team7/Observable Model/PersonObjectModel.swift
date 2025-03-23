@@ -9,17 +9,42 @@ import Foundation
 
 
 class PersonObjectModel: ObservableObject {
-    @Published var people: [PersonModel] = [
-        PersonModel(name: "Gatot"),
-        PersonModel(name: "Isa"),
-        PersonModel(name: "Ananta"),
-        PersonModel(name: "Mario"),
-//        PersonModel(name: "Yudha"),
-//        PersonModel(name: "Musafa"),
-//        PersonModel(name: "Naela"),
-//        PersonModel(name: "Gilang"),
-//        PersonModel(name: "Jeky"),
-    ]
+    
+    
+    @Published var people: [PersonModel] = [] {
+        didSet {
+            savePeople() // Save whenever data changes
+        }
+    }
+    
+    private let peopleKey = "peopleData"
+
+    init() {
+        loadPeople() // Load saved history when the app starts
+    }
+    
+    /// **Saves historyObjects to UserDefaults**
+    private func savePeople() {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        if let encodedData = try? encoder.encode(people) {
+            UserDefaults.standard.set(encodedData, forKey: peopleKey)
+        }
+    }
+    
+    /// **Loads historyObjects from UserDefaults**
+    private func loadPeople() {
+        if let savedData = UserDefaults.standard.data(forKey: peopleKey) {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            if let decodedHistory = try? decoder.decode([PersonModel].self, from: savedData) {
+                self.people = decodedHistory
+                return
+            }
+        }
+    }
+    
+    
     
     
     @Published var searchText: String = ""

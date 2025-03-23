@@ -9,12 +9,12 @@ import Foundation
 
 class BillObjectModel: ObservableObject {
     @Published var bills: [BillModel] = [
-        BillModel(name: "Mie ayam", price: 8500),
-        BillModel(name: "Bakso", price: 10000),
-        BillModel(name: "Es Jeruk", price: 5000),
-        BillModel(name: "Es Teh", price: 5000),
-        BillModel(name: "Bakwan", price: 2000),
-        BillModel(name: "Tempe", price: 2000)
+//        BillModel(name: "Mie ayam", price: 8500),
+//        BillModel(name: "Bakso", price: 10000),
+//        BillModel(name: "Es Jeruk", price: 5000),
+//        BillModel(name: "Es Teh", price: 5000),
+//        BillModel(name: "Bakwan", price: 2000),
+//        BillModel(name: "Tempe", price: 2000)
     ]
     
     @Published var searchText: String = ""

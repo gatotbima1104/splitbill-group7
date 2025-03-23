@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BillModel: Identifiable {
+struct BillModel: Identifiable, Codable {
     var id: UUID = UUID()
     var name: String
     var price: Double

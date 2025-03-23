@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct PersonModel: Identifiable {
+struct PersonModel: Identifiable, Codable  {
     var id: UUID = UUID()
     var name: String
     var isPaid : Bool = false
