@@ -22,11 +22,11 @@ struct TransactionListView: View {
 
         if selectedBills.contains(bill.id) {
             // Unassign if already selected
-            selectedBills.remove(bill.id)
+            selectedBills.remove(bill.id) // Uncheck
             personViewModel.removeUserBill(selectedPerson.id, bill)
         } else {
             // Assign to the selected user
-            selectedBills.insert(bill.id)
+            selectedBills.insert(bill.id) // Check
             personViewModel.addUserBill(bill)
         }
     }
@@ -43,19 +43,6 @@ struct TransactionListView: View {
             selectedBills = Set(selectedPerson.bills.map { $0.id }) // Load assigned bills
         } else {
             selectedBills.removeAll() // Reset if no user is selected
-        }
-    }
-    
-    // Function to toggle selection state
-    private func toggleBillSelection(_ bill: BillModel) {
-        guard let selectedPerson = selectedPerson else { return }
-        
-        if selectedBills.contains(bill.id) {
-            selectedBills.remove(bill.id) // Uncheck
-            personViewModel.removeUserBill(selectedPerson.id, bill) // Remove from user's assigned bills
-        } else {
-            selectedBills.insert(bill.id) // Check
-            personViewModel.addUserBill(bill) // Assign to user
         }
     }
     
@@ -77,13 +64,7 @@ struct TransactionListView: View {
                     Text("Add")
                         .font(.headline)
                         .foregroundColor(Color("ShadedBlue"))
-//                        .padding(.all, 5)
-//                        .background(Color.blue)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(5)
                 }
-                    
-                
             }
             
             // Search bar
@@ -154,24 +135,18 @@ struct TransactionListView: View {
                             }
                             
                             Spacer()
-            //
-
                             
                         }.onTapGesture {
                             toggleAndAssignBill(bill)
                         }
                         .padding(.vertical)
-            //            .padding(.horizontal)
-            //            .background(Color.gray.opacity(0.1))
                         .listRowInsets(EdgeInsets())
-                        
                     }
                     .onDelete(perform: billViewModel.removeBill)
-                    
                 }
             }
-                        .listStyle(PlainListStyle())
-                        .padding(.horizontal, 0)
+            .listStyle(PlainListStyle())
+            .padding(.horizontal, 0)
 
         }
         .padding()

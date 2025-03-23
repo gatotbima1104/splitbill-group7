@@ -42,7 +42,7 @@ class PersonObjectModel: ObservableObject {
     // Assign a bill to the selected user
     func addUserBill(_ bill: BillModel) {
         guard let selectedId = isUserSelected else {
-            print("❌ No user selected.")
+            print("no user selected.")
             return
         }
         
@@ -50,10 +50,7 @@ class PersonObjectModel: ObservableObject {
             if !people[index].bills.contains(where: { $0.id == bill.id }) {
                 people[index].bills.append(bill)
             }
-            
-            // ✅ Log selected bills
-            let assignedBills = people[index].bills.map { $0.name }
-            print("✅ \(people[index])")
+//            print("\(people[index])")
         }
     }
 
@@ -61,10 +58,7 @@ class PersonObjectModel: ObservableObject {
     func removeUserBill(_ userId: UUID, _ bill: BillModel) {
         if let index = people.firstIndex(where: { $0.id == userId }) {
             people[index].bills.removeAll { $0.id == bill.id }
-            
-            // ✅ Log after removal
-            let assignedBills = people[index].bills.map { $0.name }
-            print("✅ \(people[index].name) now has: \(assignedBills.joined(separator: ", "))")
+//            print("\(people[index].name) \(assignedBills)")
         }
     }
     
