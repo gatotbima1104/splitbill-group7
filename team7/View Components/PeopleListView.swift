@@ -81,12 +81,10 @@ struct PeopleListView: View {
                             .fontWeight(.regular)
                     }
                     // MARK: Alert to delete person
-                    .alert("Important", isPresented: $isPersonDeleted){
+                    .alert("Are you sure you want to delete this person ?",  isPresented: $isPersonDeleted){
                         Button("Delete", role: .destructive){
                             personViewModel.removePerson(at: item.id)
                         }
-                    } message: {
-                        Text("Delete this person?")
                     }
                     .onTapGesture {
                         personViewModel.selecPerson(id: item.id)
