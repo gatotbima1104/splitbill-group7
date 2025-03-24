@@ -72,7 +72,7 @@ struct TransactionListView: View {
 
             List {
                 if billViewModel.bills.isEmpty {
-                    ListNotFound(text: "No Items Yet", size: 100, spacing: 10)
+                    ListNotFound(text: "No Items Yet", size: 50, spacing: 10)
                 }else{
                     ForEach(billViewModel.filteredBills, id: \.id) { bill in
                         HStack {

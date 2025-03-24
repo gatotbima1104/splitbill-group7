@@ -30,14 +30,18 @@ struct PeopleListView: View {
                     isAddPersonViewPresented = true
                 }) {
                     VStack {
-                        Image(systemName: "plus.circle")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .padding(3)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundColor(Color("ShadedBlue"))
+                        ZStack {
+                            Image(systemName: "circle.fill")
+                                .resizable()
+                                .frame(width: 60, height: 60)
+                                .foregroundColor(Color("Blue"))
                             
-                        Text("Add")
+                            Text("+")
+                                .font(.system(size: 30, weight: .regular))
+                                .foregroundColor(.white)
+                        }
+                            
+                        Text("Add Person")
                             .font(.caption)
                             .fontWeight(.regular)
                             .foregroundStyle(Color("ShadedBlue"))
