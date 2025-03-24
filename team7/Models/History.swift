@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HistoryModel: Identifiable {
+struct HistoryModel: Identifiable, Codable  {
     var id: UUID = UUID()
     var name: String
     var createdAt: Date = Date()

@@ -11,6 +11,8 @@ struct PeopleListView: View {
     
     @ObservedObject var personViewModel: PersonObjectModel
     @State var isAddPersonViewPresented: Bool = false
+    // MARK: Delete Person
+    @State var isPersonDeleted: Bool = false
     
     // Generate a random color based on the user's ID
     func randomColor(for id: UUID) -> Color {
@@ -70,10 +72,21 @@ struct PeopleListView: View {
                                     .offset(x: 20, y: 20) // Position the checkmark at the bottom-right corner
                             }
                         }
+                        .onLongPressGesture{
+                            isPersonDeleted = true
+                        }
                         
                         Text(item.name.capitalized)
                             .font(.caption)
                             .fontWeight(.regular)
+                    }
+                    // MARK: Alert to delete person
+                    .alert("Important", isPresented: $isPersonDeleted){
+                        Button("Delete", role: .destructive){
+                            personViewModel.removePerson(at: item.id)
+                        }
+                    } message: {
+                        Text("Delete this person?")
                     }
                     .onTapGesture {
                         personViewModel.selecPerson(id: item.id)

@@ -26,7 +26,7 @@ struct HomeView: View {
                         ListNotFound(text: "No Bills Yet", size: 150, spacing: 50)
                     } else {
                         ForEach(historyViewModel.historyObjects, id: \.id){ history in
-                            NavigationLink (destination: HistoryView(history:history).navigationTitle(history.name)
+                            NavigationLink (destination: HistoryView(history:history,historyViewModel: historyViewModel).navigationTitle(history.name)
 ){
                                 HStack {
                                     VStack (alignment: .leading, spacing: 10) {
@@ -64,7 +64,7 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: AssignBillView(personViewModel: personViewModel, billViewModel: billViewModel)) {
+                NavigationLink(destination: AssignBillView(personViewModel: personViewModel, billViewModel: billViewModel,historyViewModel: historyViewModel)) {
                     
                     if historyViewModel.historyObjects.isEmpty {
                         Text("+ New Bills")

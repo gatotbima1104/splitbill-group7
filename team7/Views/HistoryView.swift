@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HistoryView: View {
     var history : HistoryModel
+    @ObservedObject var historyViewModel: HistoryObjectModel
     @State private var pickedPayment = 0
     @State private var paymentAccount : String = ""
     @State private var paymentNumber : String = ""
@@ -60,7 +61,7 @@ struct HistoryView: View {
                                 .fontWeight(.regular)
                             
                         }.padding(.top,5).onTapGesture {
-//                            history.people[index].isPaid.toggle()
+                            historyViewModel.toggleIsPaid(personId: history.people[index].id, historyId: history.id)
                         }
                       
                     }
@@ -160,5 +161,5 @@ struct HistoryView: View {
 }
 
 #Preview {
-    HistoryView(history: HistoryModel(name: "Nama Bill", people: [PersonModel(name: "Mushafa")], bills: [BillModel(name: "Teh Obeng", price: 3000)]))
+    HistoryView(history: HistoryModel(name: "Nama Bill", people: [PersonModel(name: "Mushafa")], bills: [BillModel(name: "Teh Obeng", price: 3000)]), historyViewModel: .init())
 }
