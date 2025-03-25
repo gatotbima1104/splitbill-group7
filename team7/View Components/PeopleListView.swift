@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct PeopleListView: View {
     
@@ -77,6 +78,9 @@ struct PeopleListView: View {
                             }
                         }
                         .onLongPressGesture{
+                            // add vibration when deleting person
+                            let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
                             isPersonDeleted = true
                         }
                         

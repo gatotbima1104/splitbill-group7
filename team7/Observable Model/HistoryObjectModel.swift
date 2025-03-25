@@ -155,6 +155,10 @@ class HistoryObjectModel: ObservableObject {
                 }
             }
         }
+    
+    func removeHistory(atOffset offsets: IndexSet) {
+        historyObjects.remove(atOffsets: offsets)
+    }
 
     
 }

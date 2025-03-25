@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var isAnimated: Bool = false
+    @State private var isAnimated: Bool = false
+    @State private var navigateToHome: Bool = false
     @ObservedObject var personViewModel: PersonObjectModel
     @ObservedObject var billViewModel: BillObjectModel
     @ObservedObject var historyViewModel: HistoryObjectModel
@@ -19,52 +20,32 @@ struct ContentView: View {
             VStack {
                 Section {
                     Spacer ()
-                    Text("Split Your Bill's Money")
-                        .foregroundStyle(.black)
-                        .font(.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .opacity(isAnimated ? 1 : 0)
-                        .offset(x: isAnimated ? 0 : 20)
-                        .animation(.easeInOut(duration: 1), value: isAnimated)
-                    
-                    Text("Not Your time")
-                        .foregroundStyle(.black)
-                        .font(.title)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .opacity(isAnimated ? 1 : 0)
-                        .offset(x: isAnimated ? 0 : 20)
-                        .animation(.easeInOut(duration: 1), value: isAnimated)
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                    Text("K-BILL")
+                        .font(.largeTitle)
+                        .foregroundStyle(Color.blue)
+                        .fontWeight(.bold)
                     Spacer ()
                 }
-                
-                NavigationLink(destination: HomeView(historyViewModel: historyViewModel, billViewModel: billViewModel, personViewModel: personViewModel)) {
-                    Button(action: {
-                    }) {
-                        Text("Next")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(
-                                LinearGradient(colors: [Color.blue, Color.purple], startPoint: .leading, endPoint: .trailing)
-                            )
-                            .cornerRadius(15)
-                            .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
-                    }
-                    .allowsHitTesting(false)
-                    .padding(.top, 30)
-                    .opacity(isAnimated ? 1 : 0)
-                    .offset(y: isAnimated ? 0 : 20)
-                    .animation(.easeInOut(duration: 1).delay(0.4), value: isAnimated)
-                }
+                .opacity(isAnimated ? 1 : 0)
+                .scaleEffect(isAnimated ? 1 : 0.5)
+                .animation(.easeInOut(duration: 1), value: isAnimated)
             }
             .safeAreaPadding(.all)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, 50)
             .background(Color("TintedBlue"))
-            .onAppear{
+            .onAppear {
                 isAnimated = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    navigateToHome = true
+                }
+            }
+            .navigationDestination(isPresented: $navigateToHome) {
+                HomeView(historyViewModel: historyViewModel, billViewModel: billViewModel, personViewModel: personViewModel)
             }
         }
     }

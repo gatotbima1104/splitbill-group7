@@ -76,6 +76,8 @@ struct TransactionListView: View {
                 if billViewModel.bills.isEmpty {
 //                    ListNotFound(text: "No Items Yet", size: 50, spacing: 10)
                     ListNotFound(size: 36, spacing: 30)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, -48)
                 }else{
                     ForEach(billViewModel.filteredBills, id: \.id) { bill in
                         HStack {
@@ -147,8 +149,8 @@ struct TransactionListView: View {
 
         }
 //        .border(Color.blue)
-        .padding(.vertical, 24)
-        .padding(.horizontal, 8)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 16)
         .background(Color.white)
         .cornerRadius(8)
         
@@ -192,8 +194,8 @@ struct TransactionListView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 16)
-        .padding(.horizontal, 8)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
         .background(Color.blue.opacity(0.1))
 //        .overlay(
 //            RoundedRectangle(cornerRadius: 8)
@@ -205,7 +207,7 @@ struct TransactionListView: View {
         .onTapGesture {
             isAddAdditionalFee = true
         }
-        .padding(.top)
+//        .border(Color.blue)
     }
 
 }

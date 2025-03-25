@@ -84,6 +84,7 @@ struct HomeView: View {
                                 .padding(.vertical, 8)
                                 .listRowSeparator(.hidden)
                             }
+                            .onDelete(perform: historyViewModel.removeHistory)
                         }
                     }
                     .padding(.vertical, historyViewModel.historyObjects.isEmpty ? 50 : 16)

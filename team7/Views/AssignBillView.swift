@@ -54,11 +54,14 @@ struct AssignBillView: View {
                     PeopleListView(personViewModel: personViewModel)
                 }
                 .padding(.horizontal, 10)
-                .padding(.vertical, 24)
+                .padding(.vertical, 8)
                 .background(Color.white)
                 .cornerRadius(15)
-                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
-                .padding(.horizontal)
+//                .border(Color.blue)
+                
+                .padding(.horizontal, 8)
+                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 16)
+                
     
                 
                 Spacer()
@@ -103,7 +106,7 @@ struct AssignBillView: View {
                     }) {
                         Text("Next")
                             .padding()
-                            .padding(.horizontal, 30)
+                            .padding(.horizontal, 16)
                             .background(!isNextButtonDisabled ? Color("Blue") : Color("Blue").opacity(0.5))
                             .foregroundColor(.white)
                             .cornerRadius(10)
@@ -121,9 +124,9 @@ struct AssignBillView: View {
                                        .navigationTitle(billsName)
                                    }
 
-                NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills),historyViewModel: historyViewModel).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
-                   
-                }
+//                NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills),historyViewModel: historyViewModel).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
+//                   
+//                }
 
 
                   

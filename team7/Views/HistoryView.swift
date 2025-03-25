@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct HistoryView: View {
     var history : HistoryModel
@@ -13,6 +14,7 @@ struct HistoryView: View {
     @State private var pickedPayment = 0
     @State private var paymentAccount : String = ""
     @State private var paymentNumber : String = ""
+    @State private var screenshotImage: UIImage?
     var body: some View {
         ScrollView{
             VStack(alignment: .leading) {
@@ -147,8 +149,7 @@ struct HistoryView: View {
         
         Spacer ()
 
-        Button(action: {
-        }){
+        Button(action: shareHistory) {
             HStack {
                 Image(systemName: "square.and.arrow.up.fill")
                 Text("Share")
@@ -159,9 +160,28 @@ struct HistoryView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
             .safeAreaPadding(.all)
+        }
     }
-      
+    
+    // Share result to image 
+    func shareHistory() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            return
+        }
+        
+        let renderer = UIGraphicsImageRenderer(size: window.bounds.size)
+        let image = renderer.image { ctx in
+            window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+        }
+
+        let activityController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        
+        if let rootViewController = window.rootViewController {
+            rootViewController.present(activityController, animated: true, completion: nil)
+        }
     }
+
 }
 
 #Preview {
