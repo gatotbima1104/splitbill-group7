@@ -15,6 +15,7 @@ struct AddAdditionaFeeView: View {
     @ObservedObject var billViewModel: BillObjectModel
     @Environment(\.dismiss) var dismiss // Used to close the sheet
     
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -23,17 +24,17 @@ struct AddAdditionaFeeView: View {
                         .keyboardType(.decimalPad)
                         .autocorrectionDisabled()
                 } header: {
-                    Text("Enter The Tax %")
+                    Text("Tax")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .fontWeight(.bold)
                 }
                 
                 Section {
-                    TextField("Additional Fee", text: $newAdditionalFee)
+                    TextField("Rp", text: $newAdditionalFee)
                         .keyboardType(.decimalPad)
                 } header: {
-                    Text("Enter The Fee")
+                    Text("Others")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .fontWeight(.bold)
@@ -45,17 +46,32 @@ struct AddAdditionaFeeView: View {
                     }
                 }
                 ToolbarItem(placement: .principal){
-                    Text("Add Item Details")
+                    Text("Additional Fee")
                         .font(.title3)
                         .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
+                        billViewModel.additionalFee = Double(newAdditionalFee) ?? 0
+                        billViewModel.taxPercentage = Double(newTax) ?? 0
                         dismiss()
                     }
                 }
             }
+        }.onAppear {
+            if(billViewModel.additionalFee > 0){
+                newAdditionalFee = billViewModel.additionalFee.description
+            }
+            
+            if(billViewModel.taxPercentage > 0){
+                newTax = billViewModel.taxPercentage.description
+            }
         }
     }
 }
+
+#Preview {
+    AddAdditionaFeeView(billViewModel: .init())
+}
+
 

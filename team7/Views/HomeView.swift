@@ -16,7 +16,6 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            
             ZStack(alignment: .bottom) {
                 VStack {
                     List {
@@ -71,7 +70,7 @@ struct HomeView: View {
                                                 }
                                             }
                                             
-                                            Text("\(history.total, format: .currency(code: "IDR")),-")
+                                            Text("\(history.calculateTotal(), format: .currency(code: "IDR")),-")
                                                 .font(.title3)
                                                 .fontWeight(.semibold)
                                         }

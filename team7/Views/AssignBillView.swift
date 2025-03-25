@@ -24,7 +24,7 @@ struct AssignBillView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing:.zero) {
                 
                 // People
                 // Title named
@@ -44,6 +44,7 @@ struct AssignBillView: View {
                     .fontWeight(.semibold)
                     .background(Color.black)
                     .padding(.bottom)
+                    .padding(.top)
                 
                 VStack {
                     // Search bar
@@ -55,18 +56,33 @@ struct AssignBillView: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 24)
                 .background(Color.white)
-                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 10)
+                .cornerRadius(15)
+                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+                .padding(.horizontal)
+    
                 
                 Spacer()
                 
                 // transaction list
                 TransactionListView(billViewModel: billViewModel, personViewModel: personViewModel)
                 
-                Spacer()
+              
                 
-                HStack {
-                    Spacer()
                     
+                ZStack {
+                    // Shadow layer
+                    Color.black.opacity(0.2)
+                        .frame(maxWidth:.infinity,maxHeight: 1) // Ensure full width
+                        .blur(radius: 5) // Softens the shadow
+
+                    // Actual line (optional)
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(maxWidth: .infinity, maxHeight: 1)
+                }
+                .frame(maxWidth: .infinity) // Ensure full width
+                HStack {
+                    Spacer() // Push button to the left
                     Button(action: {
                         // Example: Validate input, save data, update state
                         if billsName.isEmpty {
@@ -75,43 +91,57 @@ struct AssignBillView: View {
                         addedHistory = HistoryModel(
                             name: billsName,
                             people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
-                            bills: billViewModel.bills
+                            bills: billViewModel.bills,
+                            additionalFee: billViewModel.additionalFee,
+                            taxPercentage: billViewModel.taxPercentage
                         )
 
                         // add to history list
                         historyViewModel.historyObjects.append(addedHistory!)
-                        // Navigate after action
-                    
+                        
                         shouldNavigate = true
-                    }){
+                    }) {
                         Text("Next")
-                            .frame(maxWidth: 100, maxHeight: 20)
                             .padding()
+                            .padding(.horizontal, 30)
                             .background(!isNextButtonDisabled ? Color("Blue") : Color("Blue").opacity(0.5))
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                    }.disabled(isNextButtonDisabled)
-                        .navigationDestination(isPresented: $shouldNavigate) {
-                           HistoryView(
-                            history: addedHistory ?? HistoryModel(
-                                name: billsName,
-                                people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
-                                bills: billViewModel.bills
-                            ),
-                               historyViewModel: historyViewModel
-                           )
-                           .navigationTitle(billsName)
-                       }
-                }
-                .padding(.bottom, -20)
-                .padding(.trailing, 10)
-                
+                    }
+                    .disabled(isNextButtonDisabled)
+                    .navigationDestination(isPresented: $shouldNavigate) {
+                                       HistoryView(
+                                        history: addedHistory ?? HistoryModel(
+                                            name: billsName,
+                                            people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
+                                            bills: billViewModel.bills
+                                        ),
+                                           historyViewModel: historyViewModel
+                                       )
+                                       .navigationTitle(billsName)
+                                   }
+
                 NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills),historyViewModel: historyViewModel).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
                    
                 }
-                Spacer()
+
+
+                  
+                }.padding(.horizontal).padding(.top, 10)
+                
+               
+               
+                
+                
+               
             }
-            .safeAreaPadding(.all, 8)
+            .safeAreaPadding(.vertical)
+            .onAppear {
+                personViewModel.clearAllPersonBills()
+                billViewModel.clearAllBills()
+                billViewModel.additionalFee = 0
+                billViewModel.taxPercentage = 0
+            }
         }
     }
 }

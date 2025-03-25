@@ -98,4 +98,11 @@ class PersonObjectModel: ObservableObject {
             people.remove(at: index)
         }
     }
+    
+    
+    func clearAllPersonBills() {
+        for index in people.indices {
+            people[index].bills.removeAll()
+        }
+    }
 }

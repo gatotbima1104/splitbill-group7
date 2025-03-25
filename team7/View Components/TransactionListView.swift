@@ -173,12 +173,23 @@ struct TransactionListView: View {
                 .font(.system(size: 20)) // Increase size
                 .imageScale(.large)
             
-            Text("Any other Additional fee?")
-                .font(.footnote)
+            Text(billViewModel.taxPercentage > 0 &&  billViewModel.additionalFee > 0  ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%, Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : billViewModel.taxPercentage > 0 ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%" : billViewModel.additionalFee > 0 ? "Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : "Any other additional fee?")
+                .font(.callout)
+                .foregroundStyle(Color("ShadedBlue"))
                 .fontWeight(.regular)
             
             Spacer ()
-            Image(systemName: "plus")
+            
+            if billViewModel.taxPercentage > 0 ||  billViewModel.additionalFee > 0 {
+                Image(systemName: "x.circle.fill")
+                    .foregroundStyle(.gray)
+                    .onTapGesture {
+                    billViewModel.taxPercentage = 0
+                    billViewModel.additionalFee = 0
+                }
+            } else{
+                Image(systemName: "plus") .foregroundStyle(Color("ShadedBlue"))
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 16)
@@ -194,7 +205,9 @@ struct TransactionListView: View {
         .onTapGesture {
             isAddAdditionalFee = true
         }
+        .padding(.top)
     }
+
 }
 
 

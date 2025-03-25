@@ -18,7 +18,10 @@ class BillObjectModel: ObservableObject {
     ]
     
     @Published var searchText: String = ""
-    
+    @Published var additionalFee: Double = 0
+    @Published var taxPercentage: Double = 0
+
+
     func addBill(name: String, price: Double) {
         bills.append(BillModel(name: name, price: price))
     }
@@ -35,5 +38,9 @@ class BillObjectModel: ObservableObject {
         } else {
             return bills.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
+    }
+    
+    func clearAllBills(){
+        bills.removeAll()
     }
 }
