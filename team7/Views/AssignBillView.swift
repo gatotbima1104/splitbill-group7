@@ -53,10 +53,9 @@ struct AssignBillView: View {
                     PeopleListView(personViewModel: personViewModel)
                 }
                 .padding(.horizontal, 10)
-                .padding(.vertical, 10)
+                .padding(.vertical, 24)
                 .background(Color.white)
-                .cornerRadius(15)
-                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 10)
                 
                 Spacer()
                 
@@ -65,48 +64,54 @@ struct AssignBillView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    // Example: Validate input, save data, update state
-                    if billsName.isEmpty {
-                        billsName = generateTitle(name: "SplitBill")
-                    }
-                    addedHistory = HistoryModel(
-                        name: billsName,
-                        people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
-                        bills: billViewModel.bills
-                    )
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        // Example: Validate input, save data, update state
+                        if billsName.isEmpty {
+                            billsName = generateTitle(name: "SplitBill")
+                        }
+                        addedHistory = HistoryModel(
+                            name: billsName,
+                            people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
+                            bills: billViewModel.bills
+                        )
 
-                    // add to history list
-                    historyViewModel.historyObjects.append(addedHistory!)
-                    // Navigate after action
+                        // add to history list
+                        historyViewModel.historyObjects.append(addedHistory!)
+                        // Navigate after action
+                    
+                        shouldNavigate = true
+                    }){
+                        Text("Next")
+                            .frame(maxWidth: 100, maxHeight: 20)
+                            .padding()
+                            .background(!isNextButtonDisabled ? Color("Blue") : Color("Blue").opacity(0.5))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }.disabled(isNextButtonDisabled)
+                        .navigationDestination(isPresented: $shouldNavigate) {
+                           HistoryView(
+                            history: addedHistory ?? HistoryModel(
+                                name: billsName,
+                                people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
+                                bills: billViewModel.bills
+                            ),
+                               historyViewModel: historyViewModel
+                           )
+                           .navigationTitle(billsName)
+                       }
+                }
+                .padding(.bottom, -20)
+                .padding(.trailing, 10)
                 
-                    shouldNavigate = true
-                }){
-                    Text("Next")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(!isNextButtonDisabled ? Color("Blue") : Color("Blue").opacity(0.5))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }.disabled(isNextButtonDisabled)
-                    .navigationDestination(isPresented: $shouldNavigate) {
-                                       HistoryView(
-                                        history: addedHistory ?? HistoryModel(
-                                            name: billsName,
-                                            people: personViewModel.filteredPeople.filter { !$0.bills.isEmpty },
-                                            bills: billViewModel.bills
-                                        ),
-                                           historyViewModel: historyViewModel
-                                       )
-                                       .navigationTitle(billsName)
-                                   }
-
                 NavigationLink(destination: HistoryView(history: HistoryModel(name: billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName, people: personViewModel.filteredPeople.filter{ !$0.bills.isEmpty }, bills: billViewModel.bills),historyViewModel: historyViewModel).navigationTitle(billsName.isEmpty ? generateTitle(name: "SplitBill") : billsName)) {
                    
                 }
                 Spacer()
             }
-            .safeAreaPadding(.all)
+            .safeAreaPadding(.all, 8)
         }
     }
 }

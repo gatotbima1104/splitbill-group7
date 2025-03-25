@@ -115,7 +115,7 @@ struct HomeView: View {
             }
             .background(
                 Image("Bg")
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(.all)
                     .position()
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)

@@ -52,13 +52,13 @@ struct PeopleListView: View {
                     VStack {
                         ZStack {
                             Circle()
-                                .fill(item.color.opacity(0.7))
+                                .fill(item.color.opacity(0.5))
                                 .frame(width: 60, height: 60)
                                 .overlay(
                                     Circle()
                                         .stroke(
                                             personViewModel.isUserSelected == item.id ? Color.blue : Color.clear,
-                                            lineWidth: 5
+                                            lineWidth: 3
                                         )
                                 )
                             
@@ -71,7 +71,7 @@ struct PeopleListView: View {
                             if !item.bills.isEmpty {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.white)
-                                    .background(Circle().fill(Color.green))
+                                    .background(Circle().fill(Color.blue))
                                     .frame(width: 18, height: 18)
                                     .offset(x: 20, y: 20) // Position the checkmark at the bottom-right corner
                             }
@@ -99,7 +99,7 @@ struct PeopleListView: View {
         }
         .frame(height: 80)
         .padding(.horizontal, 5)
-        .padding(.bottom, 10)
+//        .padding(.bottom, 10)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddPersonView(peopleViewModel: personViewModel)
                 .presentationDetents([.medium])

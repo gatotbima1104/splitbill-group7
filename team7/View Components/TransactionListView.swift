@@ -52,7 +52,7 @@ struct TransactionListView: View {
 
             // Custom fontWeight
             HStack {
-                Text("Item Details")
+                Text("Item's Details")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title2)
                     .fontWeight(.bold)
@@ -68,11 +68,14 @@ struct TransactionListView: View {
             }
             
             // Search bar
-            SearctBarView(search: $billViewModel.searchText, placeholder: "Seacrh Bill here")
-
+            if !billViewModel.bills.isEmpty {
+                SearctBarView(search: $billViewModel.searchText, placeholder: "Seacrh Bill here")
+            }
+            
             List {
                 if billViewModel.bills.isEmpty {
-                    ListNotFound(text: "No Items Yet", size: 50, spacing: 10)
+//                    ListNotFound(text: "No Items Yet", size: 50, spacing: 10)
+                    ListNotFound(size: 36, spacing: 30)
                 }else{
                     ForEach(billViewModel.filteredBills, id: \.id) { bill in
                         HStack {
@@ -91,10 +94,10 @@ struct TransactionListView: View {
                                         .font(.footnote)
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(.systemGray))
-                                    Text("x \(personViewModel.people.filter { $0.bills.contains(where: { $0.id == bill.id }) }.count)")
-                                        .font(.footnote)
-                                        .fontWeight(.regular)
-                                        .foregroundColor(Color(.systemGray))
+//                                    Text("x\(personViewModel.people.filter { $0.bills.contains(where: { $0.id == bill.id }) }.count)")
+//                                        .font(.footnote)
+//                                        .fontWeight(.regular)
+//                                        .foregroundColor(Color(.systemGray))
                                 }
                                 .padding(.horizontal, 5)
                                 
@@ -104,28 +107,22 @@ struct TransactionListView: View {
                                     VStack(alignment: .trailing, spacing: 5) {
                                         let people = personViewModel.people
                                             .filter { $0.bills.contains(where: { $0.id == bill.id }) }
-                                            .map { $0.name }
 
-                                        LazyVGrid(
-                                            columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: min(people.count, 3)),
-                                            spacing: 5
-                                        ) {
-                                            ForEach(people.reversed(), id: \.self) { person in
-                                                HStack {
-                                                    Spacer()
-                                                    Text(person.prefix(1))
-                                                        .frame(minWidth: 30)
-                                                        .lineLimit(1)
-                                                        .truncationMode(.tail)
-                                                        .padding(.vertical, 5)
-                                                        .padding(.horizontal, 8)
+                                        HStack(spacing: -10) {
+                                            ForEach(people, id: \.id) { person in
+                                                ZStack {
+                                                    Circle()
+                                                        .fill(person.color.opacity(0.7))
+                                                        .frame(width: 30, height: 30)
                                                         .overlay(
-                                                            RoundedRectangle(cornerRadius: 8)
-                                                                .stroke(Color.blue, lineWidth: 2)
+                                                            Circle()
+                                                                .stroke(Color.white, lineWidth: 2)
                                                         )
-                                                        .cornerRadius(8)
-                                                        .font(.caption2)
-                                                        .foregroundColor(.blue)
+                                                    
+                                                    Text(person.name.prefix(1).uppercased())
+                                                        .font(.footnote)
+                                                        .fontWeight(.bold)
+                                                        .foregroundColor(.white)
                                                 }
                                             }
                                         }
@@ -149,10 +146,13 @@ struct TransactionListView: View {
             .padding(.horizontal, 0)
 
         }
-        .padding()
+//        .border(Color.blue)
+        .padding(.vertical, 24)
+        .padding(.horizontal, 8)
         .background(Color.white)
-        .cornerRadius(15)
-        .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+        .cornerRadius(8)
+        
+//        .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddBillView(billViewModel: billViewModel)
                 .presentationDetents([.medium])
@@ -169,21 +169,28 @@ struct TransactionListView: View {
         
         // Additional fee container
         HStack {
-            Image(systemName: "plus")
-            Text("Add Additional Fee")
+            Image(systemName: "dollarsign.circle.fill")
+                .font(.system(size: 20)) // Increase size
+                .imageScale(.large)
+            
+            Text("Any other Additional fee?")
                 .font(.footnote)
                 .fontWeight(.regular)
+            
+            Spacer ()
+            Image(systemName: "plus")
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 4)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.blue, lineWidth: 2)
-        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 8)
+        .background(Color.blue.opacity(0.1))
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 8)
+//                .stroke(Color.blue, lineWidth: 2)
+//        )
         .foregroundColor(.blue)
         .foregroundColor(Color("ShadedBlue"))
         .cornerRadius(8)
-        .frame(maxWidth: .infinity, alignment: .leading)
         .onTapGesture {
             isAddAdditionalFee = true
         }
