@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3D48445E2D87E04500378E9E"
-               BuildableName = "team7.app"
-               BlueprintName = "team7"
-               ReferencedContainer = "container:team7.xcodeproj">
+               BuildableName = "K-BILL.app"
+               BlueprintName = "K-BILL"
+               ReferencedContainer = "container:K-BILL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3D48445E2D87E04500378E9E"
-            BuildableName = "team7.app"
-            BlueprintName = "team7"
-            ReferencedContainer = "container:team7.xcodeproj">
+            BuildableName = "K-BILL.app"
+            BlueprintName = "K-BILL"
+            ReferencedContainer = "container:K-BILL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3D48445E2D87E04500378E9E"
-            BuildableName = "team7.app"
-            BlueprintName = "team7"
-            ReferencedContainer = "container:team7.xcodeproj">
+            BuildableName = "K-BILL.app"
+            BlueprintName = "K-BILL"
+            ReferencedContainer = "container:K-BILL.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		3D48445F2D87E04500378E9E /* team7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = team7.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D48445F2D87E04500378E9E /* K-BILL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "K-BILL.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		3D4844602D87E04500378E9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3D48445F2D87E04500378E9E /* team7.app */,
+				3D48445F2D87E04500378E9E /* K-BILL.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3D48445E2D87E04500378E9E /* team7 */ = {
+		3D48445E2D87E04500378E9E /* K-BILL */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D48446D2D87E04600378E9E /* Build configuration list for PBXNativeTarget "team7" */;
+			buildConfigurationList = 3D48446D2D87E04600378E9E /* Build configuration list for PBXNativeTarget "K-BILL" */;
 			buildPhases = (
 				3D48445B2D87E04500378E9E /* Sources */,
 				3D48445C2D87E04500378E9E /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				3D4844612D87E04500378E9E /* team7 */,
 			);
-			name = team7;
+			name = "K-BILL";
 			packageProductDependencies = (
 			);
 			productName = team7;
-			productReference = 3D48445F2D87E04500378E9E /* team7.app */;
+			productReference = 3D48445F2D87E04500378E9E /* K-BILL.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3D48445A2D87E04500378E9E /* Build configuration list for PBXProject "team7" */;
+			buildConfigurationList = 3D48445A2D87E04500378E9E /* Build configuration list for PBXProject "K-BILL" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3D48445E2D87E04500378E9E /* team7 */,
+				3D48445E2D87E04500378E9E /* K-BILL */,
 			);
 		};
 /* End PBXProject section */
@@ -305,7 +305,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3D48445A2D87E04500378E9E /* Build configuration list for PBXProject "team7" */ = {
+		3D48445A2D87E04500378E9E /* Build configuration list for PBXProject "K-BILL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3D48446B2D87E04600378E9E /* Debug */,
@@ -314,7 +314,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D48446D2D87E04600378E9E /* Build configuration list for PBXNativeTarget "team7" */ = {
+		3D48446D2D87E04600378E9E /* Build configuration list for PBXNativeTarget "K-BILL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3D48446E2D87E04600378E9E /* Debug */,
