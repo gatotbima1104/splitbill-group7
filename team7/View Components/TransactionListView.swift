@@ -153,6 +153,7 @@ struct TransactionListView: View {
         .background(Color.white)
         .cornerRadius(15)
         .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+        .padding(.horizontal)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddBillView(billViewModel: billViewModel)
                 .presentationDetents([.medium])
@@ -169,25 +170,43 @@ struct TransactionListView: View {
         
         // Additional fee container
         HStack {
-            Image(systemName: "plus")
-            Text("Add Additional Fee")
-                .font(.footnote)
+            Image(systemName: "dollarsign.circle.fill")
+            if(billViewModel.taxPercentage > 0){
+                
+            }
+            Text(billViewModel.taxPercentage > 0 &&  billViewModel.additionalFee > 0  ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%, Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : billViewModel.taxPercentage > 0 ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%" : billViewModel.additionalFee > 0 ? "Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : "Any other additional fee?")
+                .font(.callout)
+                .foregroundStyle(Color("ShadedBlue"))
                 .fontWeight(.regular)
+            
+            Spacer()
+            
+            
+            if billViewModel.taxPercentage > 0 ||  billViewModel.additionalFee > 0 {
+                Image(systemName: "x.circle.fill")
+                    .foregroundStyle(.gray)
+                    .onTapGesture {
+                    billViewModel.taxPercentage = 0
+                    billViewModel.additionalFee = 0
+                }
+            } else{
+                Image(systemName: "plus") .foregroundStyle(Color("ShadedBlue"))
+            }
+           
+
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 4)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.blue, lineWidth: 2)
-        )
+        .padding(.all, 12)
+        .background(Color("TintedBlue"))
         .foregroundColor(.blue)
         .foregroundColor(Color("ShadedBlue"))
-        .cornerRadius(8)
+//        .cornerRadius(8)
         .frame(maxWidth: .infinity, alignment: .leading)
         .onTapGesture {
             isAddAdditionalFee = true
         }
+        .padding(.top)
     }
+
 }
 
 

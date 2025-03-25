@@ -16,11 +16,24 @@ struct HistoryModel: Identifiable, Codable  {
     var bills: [BillModel]
     var paymentMethod: String?
     var paymentNumber: String?
+    var additionalFee : Double = 0
+    var taxPercentage : Double = 0
     
     // Computed property to calculate total bill amount
-    var total: Double {
-        people.reduce(0) { total, person in
-            total + person.bills.reduce(0) { $0 + $1.price }
-        }
-    }
+    func calculateTotal() -> Double {
+           var amount = 0.0
+
+           // Sum up all bills for each person
+           for person in people {
+               for bill in person.bills {
+                   let taxMultiplier = 1 + (taxPercentage / 100)
+                   amount += bill.price * taxMultiplier
+               }
+           }
+           
+           // Add additional fee
+           amount += additionalFee
+           
+           return amount
+       }
 }

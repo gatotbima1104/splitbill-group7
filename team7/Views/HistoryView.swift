@@ -48,7 +48,11 @@ struct HistoryView: View {
                     .padding(.vertical, 10)
                     
                     ForEach(Array(history.people.enumerated()), id: \.offset) { index, element in
-                        let userPaid = history.people[index].bills.reduce(0) { $0 + $1.price }
+                        let userPaid : Double = history.people[index].bills.reduce(0) {
+                            
+                            $0 + ($1.price *  (1 + (history.taxPercentage / 100)))}
+                        let additionalFee : Double = (history.additionalFee / Double(history.people.count))
+                        let totalPaid : Double = userPaid + additionalFee
                         HStack{
                             history.people[index].isPaid ?
                             Image(systemName: "checkmark.square.fill")
@@ -56,7 +60,7 @@ struct HistoryView: View {
                             Text(history.people[index].name)
                                 .font(.callout)
                             Spacer()
-                            Text(userPaid, format: .currency(code: "IDR"))
+                            Text(totalPaid, format: .currency(code: "IDR"))
                                 .font(.callout)
                                 .fontWeight(.regular)
                             
@@ -122,7 +126,7 @@ struct HistoryView: View {
                         Text("Total")
                             .font(.callout)
                         Spacer()
-                        Text(history.total, format: .currency(code: "IDR"))
+                        Text(history.calculateTotal(), format: .currency(code: "IDR"))
                             .font(.callout)
                             .fontWeight(.regular)
                         .foregroundColor(Color(.systemGray))
