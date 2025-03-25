@@ -139,6 +139,8 @@ struct AssignBillView: View {
             .onAppear {
                 personViewModel.clearAllPersonBills()
                 billViewModel.clearAllBills()
+                billViewModel.additionalFee = 0
+                billViewModel.taxPercentage = 0
             }
         }
     }
