@@ -6,13 +6,12 @@
 //
 import Foundation
 
-let timeFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HHmmss"
-    return formatter
-}()
-
+// Generate by numbers increment
 func generateTitle(name: String) -> String {
-    let timeString = timeFormatter.string(from: Date())
-    return "\(name)#\(timeString)"
+    struct Counter {
+        static var count = 0
+    }
+    
+    Counter.count += 1
+    return "\(name)#\(Counter.count)"
 }
