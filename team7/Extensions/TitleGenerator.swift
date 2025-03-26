@@ -6,12 +6,11 @@
 //
 import Foundation
 
-// Generate by numbers increment
+// generate title by numbers increment
 func generateTitle(name: String) -> String {
-    struct Counter {
-        static var count = 0
-    }
+    let key = "splitBillCounter"
+    let currentCount = UserDefaults.standard.integer(forKey: key) + 1
+    UserDefaults.standard.set(currentCount, forKey: key)
     
-    Counter.count += 1
-    return "\(name)#\(Counter.count)"
+    return "\(name)#\(currentCount)"
 }
