@@ -141,6 +141,7 @@ struct AssignBillView: View {
             .safeAreaPadding(.vertical)
             .onAppear {
                 personViewModel.clearAllPersonBills()
+                personViewModel.isUserSelected = nil
                 billViewModel.clearAllBills()
                 billViewModel.additionalFee = 0
                 billViewModel.taxPercentage = 0

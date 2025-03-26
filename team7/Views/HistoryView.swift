@@ -11,7 +11,6 @@ import UIKit
 struct HistoryView: View {
     var history : HistoryModel
     @ObservedObject var historyViewModel: HistoryObjectModel
-    @State private var pickedPayment = 0
     @State private var paymentAccount : String = ""
     @State private var paymentNumber : String = ""
     @State private var screenshotImage: UIImage?
@@ -22,13 +21,7 @@ struct HistoryView: View {
                     Text("Payment").font(.title3)
                         .fontWeight(.semibold)
                     Section {
-                        Picker("What is your payment method?", selection: $pickedPayment) {
-                                Text("Cash").tag(0)
-                                Text("Transfer").tag(1)
-                            }
-                            .pickerStyle(.segmented)
-                        
-                        if pickedPayment == 1 {
+                      
                             HStack {
                                 Text("Account")
                                 Divider()
@@ -45,7 +38,6 @@ struct HistoryView: View {
                                 TextField("Account Number", text: $paymentNumber).multilineTextAlignment(.trailing)
                                 
                             }
-                        }
                     }
                     .padding(.vertical, 10)
                     
@@ -156,9 +148,9 @@ struct HistoryView: View {
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color(.green))
+            .background(Color("Blue"))
             .foregroundColor(.white)
-            .cornerRadius(10)
+            .cornerRadius(20)
             .safeAreaPadding(.all)
         }
     }

@@ -13,13 +13,9 @@ struct PeopleListView: View {
     @ObservedObject var personViewModel: PersonObjectModel
     @State var isAddPersonViewPresented: Bool = false
     // MARK: Delete Person
-    @State var isPersonDeleted: Bool = false
+    @State var personToDelete: PersonModel? // Store the selected person to delete
     
-    // Generate a random color based on the user's ID
-    func randomColor(for id: UUID) -> Color {
-        let colors: [Color] = [.red, .green, .orange, .purple, .pink, .yellow]
-        return colors[id.hashValue % colors.count] // Assign a consistent color
-    }
+    
     
     var body: some View {
         
@@ -81,7 +77,7 @@ struct PeopleListView: View {
                             // add vibration when deleting person
                             let generator = UIImpactFeedbackGenerator(style: .medium)
                             generator.impactOccurred()
-                            isPersonDeleted = true
+                            personToDelete = item
                         }
                         
                         Text(item.name.capitalized)
@@ -89,9 +85,21 @@ struct PeopleListView: View {
                             .fontWeight(.regular)
                     }
                     // MARK: Alert to delete person
-                    .alert("Are you sure you want to delete this person ?",  isPresented: $isPersonDeleted){
-                        Button("Delete", role: .destructive){
-                            personViewModel.removePerson(at: item.id)
+                    .alert(
+                        "Do you want to delete \(personToDelete?.name.capitalized ?? "person")?",
+                        isPresented: Binding(
+                            get: { personToDelete != nil },
+                            set: { if !$0 { personToDelete = nil } } // Reset after dismiss
+                        )
+                    ) {
+                        Button("Delete", role: .destructive) {
+                            if let person = personToDelete {
+                                personViewModel.removePerson(at: person.id)
+                                personToDelete = nil // Clear selection after deleting
+                            }
+                        }
+                        Button("Cancel", role: .cancel) {
+                            personToDelete = nil
                         }
                     }
                     .onTapGesture {

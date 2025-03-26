@@ -14,6 +14,7 @@ class PersonObjectModel: ObservableObject {
     @Published var people: [PersonModel] = [] {
         didSet {
             savePeople() // Save whenever data changes
+            updateFilteredPeople() // Ensure filteredPeople updates
         }
     }
     
@@ -21,6 +22,7 @@ class PersonObjectModel: ObservableObject {
 
     init() {
         loadPeople() // Load saved history when the app starts
+        updateFilteredPeople() // Initialize filteredPeople
     }
     
     /// **Saves historyObjects to UserDefaults**
@@ -47,17 +49,16 @@ class PersonObjectModel: ObservableObject {
     
     
     
-    @Published var searchText: String = ""
-    @Published var isUserSelected: UUID?
-
-        // Computed property to filter people based on searchText
-        var filteredPeople: [PersonModel] {
-            if searchText.isEmpty {
-                return people
-            } else {
-                return people.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+    @Published var searchText: String = "" {
+            didSet {
+                updateFilteredPeople() // Update filteredPeople whenever search text changes
             }
         }
+    
+    @Published var filteredPeople: [PersonModel] = [] // Now observable
+    @Published var isUserSelected: UUID?
+
+    
     
     // select person
     func selecPerson(id: UUID) {
@@ -105,4 +106,13 @@ class PersonObjectModel: ObservableObject {
             people[index].bills.removeAll()
         }
     }
+    
+    // Updates filteredPeople whenever searchText or people changes
+       private func updateFilteredPeople() {
+           if searchText.isEmpty {
+               filteredPeople = people
+           } else {
+               filteredPeople = people.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+           }
+       }
 }
