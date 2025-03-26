@@ -18,7 +18,7 @@ struct PersonModel: Identifiable, Codable  {
     var bills: [BillModel] = []
     
     var color: Color {
-        return PersonModel.colorForName(name)
+        return PersonModel.colorForName(id.uuidString)
     }
     
     private static func colorForName(_ name: String) -> Color {
