@@ -6,13 +6,11 @@
 //
 import Foundation
 
-let timeFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HHmmss"
-    return formatter
-}()
-
+// generate title by numbers increment
 func generateTitle(name: String) -> String {
-    let timeString = timeFormatter.string(from: Date())
-    return "\(name)#\(timeString)"
+    let key = "splitBillCounter"
+    let currentCount = UserDefaults.standard.integer(forKey: key) + 1
+    UserDefaults.standard.set(currentCount, forKey: key)
+    
+    return "\(name)#\(currentCount)"
 }

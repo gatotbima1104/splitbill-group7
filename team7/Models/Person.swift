@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct PersonModel: Identifiable {
+struct PersonModel: Identifiable, Codable  {
     var id: UUID = UUID()
     var name: String
     var isPaid : Bool = false
@@ -18,7 +18,7 @@ struct PersonModel: Identifiable {
     var bills: [BillModel] = []
     
     var color: Color {
-        return PersonModel.colorForName(name)
+        return PersonModel.colorForName(id.uuidString)
     }
     
     private static func colorForName(_ name: String) -> Color {

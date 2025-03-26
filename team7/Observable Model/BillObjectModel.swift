@@ -9,18 +9,26 @@ import Foundation
 
 class BillObjectModel: ObservableObject {
     @Published var bills: [BillModel] = [
-        BillModel(name: "Mie ayam", price: 8500),
-        BillModel(name: "Bakso", price: 10000),
-        BillModel(name: "Es Jeruk", price: 5000),
-        BillModel(name: "Es Teh", price: 5000),
-        BillModel(name: "Bakwan", price: 2000),
-        BillModel(name: "Tempe", price: 2000)
+//        BillModel(name: "Mie ayam", price: 8500),
+//        BillModel(name: "Bakso", price: 10000),
+//        BillModel(name: "Es Jeruk", price: 5000),
+//        BillModel(name: "Es Teh", price: 5000),
+//        BillModel(name: "Bakwan", price: 2000),
+//        BillModel(name: "Tempe", price: 2000)
     ]
     
     @Published var searchText: String = ""
-    
+    @Published var additionalFee: Double = 0
+    @Published var taxPercentage: Double = 0
+
+
     func addBill(name: String, price: Double) {
         bills.append(BillModel(name: name, price: price))
+    }
+    
+    // remove bills
+    func removeBill(atOffset offsets: IndexSet) {
+        bills.remove(atOffsets: offsets)
     }
     
     // Computed property to filter people based on searchText
@@ -30,5 +38,9 @@ class BillObjectModel: ObservableObject {
         } else {
             return bills.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
+    }
+    
+    func clearAllBills(){
+        bills.removeAll()
     }
 }

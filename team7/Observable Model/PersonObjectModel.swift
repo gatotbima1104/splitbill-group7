@@ -9,30 +9,56 @@ import Foundation
 
 
 class PersonObjectModel: ObservableObject {
-    @Published var people: [PersonModel] = [
-        PersonModel(name: "Gatot"),
-        PersonModel(name: "Isa"),
-        PersonModel(name: "Ananta"),
-        PersonModel(name: "Mario"),
-//        PersonModel(name: "Yudha"),
-//        PersonModel(name: "Musafa"),
-//        PersonModel(name: "Naela"),
-//        PersonModel(name: "Gilang"),
-//        PersonModel(name: "Jeky"),
-    ]
     
     
-    @Published var searchText: String = ""
-    @Published var isUserSelected: UUID?
-
-        // Computed property to filter people based on searchText
-        var filteredPeople: [PersonModel] {
-            if searchText.isEmpty {
-                return people
-            } else {
-                return people.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+    @Published var people: [PersonModel] = [] {
+        didSet {
+            savePeople() // Save whenever data changes
+            updateFilteredPeople() // Ensure filteredPeople updates
+        }
+    }
+    
+    private let peopleKey = "peopleData"
+
+    init() {
+        loadPeople() // Load saved history when the app starts
+        updateFilteredPeople() // Initialize filteredPeople
+    }
+    
+    /// **Saves historyObjects to UserDefaults**
+    private func savePeople() {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        if let encodedData = try? encoder.encode(people) {
+            UserDefaults.standard.set(encodedData, forKey: peopleKey)
+        }
+    }
+    
+    /// **Loads historyObjects from UserDefaults**
+    private func loadPeople() {
+        if let savedData = UserDefaults.standard.data(forKey: peopleKey) {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            if let decodedHistory = try? decoder.decode([PersonModel].self, from: savedData) {
+                self.people = decodedHistory
+                return
             }
         }
+    }
+    
+    
+    
+    
+    @Published var searchText: String = "" {
+            didSet {
+                updateFilteredPeople() // Update filteredPeople whenever search text changes
+            }
+        }
+    
+    @Published var filteredPeople: [PersonModel] = [] // Now observable
+    @Published var isUserSelected: UUID?
+
+    
     
     // select person
     func selecPerson(id: UUID) {
@@ -42,7 +68,7 @@ class PersonObjectModel: ObservableObject {
     // Assign a bill to the selected user
     func addUserBill(_ bill: BillModel) {
         guard let selectedId = isUserSelected else {
-            print("❌ No user selected.")
+            print("no user selected.")
             return
         }
         
@@ -50,10 +76,7 @@ class PersonObjectModel: ObservableObject {
             if !people[index].bills.contains(where: { $0.id == bill.id }) {
                 people[index].bills.append(bill)
             }
-            
-            // ✅ Log selected bills
-            let assignedBills = people[index].bills.map { $0.name }
-            print("✅ \(people[index])")
+//            print("\(people[index])")
         }
     }
 
@@ -61,10 +84,7 @@ class PersonObjectModel: ObservableObject {
     func removeUserBill(_ userId: UUID, _ bill: BillModel) {
         if let index = people.firstIndex(where: { $0.id == userId }) {
             people[index].bills.removeAll { $0.id == bill.id }
-            
-            // ✅ Log after removal
-            let assignedBills = people[index].bills.map { $0.name }
-            print("✅ \(people[index].name) now has: \(assignedBills.joined(separator: ", "))")
+//            print("\(people[index].name) \(assignedBills)")
         }
     }
     
@@ -72,4 +92,27 @@ class PersonObjectModel: ObservableObject {
     func addPerson(name: String) {
         people.append(PersonModel(name: name))
     }
+    
+    // remove person
+    func removePerson(at id: UUID) {
+        if let index = people.firstIndex(where: {$0.id == id}) {
+            people.remove(at: index)
+        }
+    }
+    
+    
+    func clearAllPersonBills() {
+        for index in people.indices {
+            people[index].bills.removeAll()
+        }
+    }
+    
+    // Updates filteredPeople whenever searchText or people changes
+       private func updateFilteredPeople() {
+           if searchText.isEmpty {
+               filteredPeople = people
+           } else {
+               filteredPeople = people.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+           }
+       }
 }

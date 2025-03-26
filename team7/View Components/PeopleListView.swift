@@ -6,17 +6,16 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct PeopleListView: View {
     
     @ObservedObject var personViewModel: PersonObjectModel
     @State var isAddPersonViewPresented: Bool = false
+    // MARK: Delete Person
+    @State var personToDelete: PersonModel? // Store the selected person to delete
     
-    // Generate a random color based on the user's ID
-    func randomColor(for id: UUID) -> Color {
-        let colors: [Color] = [.red, .green, .orange, .purple, .pink, .yellow]
-        return colors[id.hashValue % colors.count] // Assign a consistent color
-    }
+    
     
     var body: some View {
         
@@ -28,14 +27,18 @@ struct PeopleListView: View {
                     isAddPersonViewPresented = true
                 }) {
                     VStack {
-                        Image(systemName: "plus.circle")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .padding(3)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .foregroundColor(Color("ShadedBlue"))
+                        ZStack {
+                            Image(systemName: "circle.fill")
+                                .resizable()
+                                .frame(width: 60, height: 60)
+                                .foregroundColor(Color("Blue"))
                             
-                        Text("Add")
+                            Text("+")
+                                .font(.system(size: 30, weight: .regular))
+                                .foregroundColor(.white)
+                        }
+                            
+                        Text("Add Person")
                             .font(.caption)
                             .fontWeight(.regular)
                             .foregroundStyle(Color("ShadedBlue"))
@@ -46,13 +49,13 @@ struct PeopleListView: View {
                     VStack {
                         ZStack {
                             Circle()
-                                .fill(item.color.opacity(0.7))
+                                .fill(item.color.opacity(0.5))
                                 .frame(width: 60, height: 60)
                                 .overlay(
                                     Circle()
                                         .stroke(
                                             personViewModel.isUserSelected == item.id ? Color.blue : Color.clear,
-                                            lineWidth: 5
+                                            lineWidth: 3
                                         )
                                 )
                             
@@ -65,15 +68,39 @@ struct PeopleListView: View {
                             if !item.bills.isEmpty {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.white)
-                                    .background(Circle().fill(Color.green))
+                                    .background(Circle().fill(Color.blue))
                                     .frame(width: 18, height: 18)
                                     .offset(x: 20, y: 20) // Position the checkmark at the bottom-right corner
                             }
+                        }
+                        .onLongPressGesture{
+                            // add vibration when deleting person
+                            let generator = UIImpactFeedbackGenerator(style: .medium)
+                            generator.impactOccurred()
+                            personToDelete = item
                         }
                         
                         Text(item.name.capitalized)
                             .font(.caption)
                             .fontWeight(.regular)
+                    }
+                    // MARK: Alert to delete person
+                    .alert(
+                        "Do you want to delete \(personToDelete?.name.capitalized ?? "person")?",
+                        isPresented: Binding(
+                            get: { personToDelete != nil },
+                            set: { if !$0 { personToDelete = nil } } // Reset after dismiss
+                        )
+                    ) {
+                        Button("Delete", role: .destructive) {
+                            if let person = personToDelete {
+                                personViewModel.removePerson(at: person.id)
+                                personToDelete = nil // Clear selection after deleting
+                            }
+                        }
+                        Button("Cancel", role: .cancel) {
+                            personToDelete = nil
+                        }
                     }
                     .onTapGesture {
                         personViewModel.selecPerson(id: item.id)
@@ -84,7 +111,7 @@ struct PeopleListView: View {
         }
         .frame(height: 80)
         .padding(.horizontal, 5)
-        .padding(.bottom, 10)
+//        .padding(.bottom, 10)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddPersonView(peopleViewModel: personViewModel)
                 .presentationDetents([.medium])

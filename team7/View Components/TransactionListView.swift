@@ -22,11 +22,11 @@ struct TransactionListView: View {
 
         if selectedBills.contains(bill.id) {
             // Unassign if already selected
-            selectedBills.remove(bill.id)
+            selectedBills.remove(bill.id) // Uncheck
             personViewModel.removeUserBill(selectedPerson.id, bill)
         } else {
             // Assign to the selected user
-            selectedBills.insert(bill.id)
+            selectedBills.insert(bill.id) // Check
             personViewModel.addUserBill(bill)
         }
     }
@@ -46,26 +46,13 @@ struct TransactionListView: View {
         }
     }
     
-    // Function to toggle selection state
-    private func toggleBillSelection(_ bill: BillModel) {
-        guard let selectedPerson = selectedPerson else { return }
-        
-        if selectedBills.contains(bill.id) {
-            selectedBills.remove(bill.id) // Uncheck
-            personViewModel.removeUserBill(selectedPerson.id, bill) // Remove from user's assigned bills
-        } else {
-            selectedBills.insert(bill.id) // Check
-            personViewModel.addUserBill(bill) // Assign to user
-        }
-    }
-    
     var body: some View {
         
         VStack {
 
             // Custom fontWeight
             HStack {
-                Text("Item Details")
+                Text("Item's Details")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.title2)
                     .fontWeight(.bold)
@@ -77,21 +64,20 @@ struct TransactionListView: View {
                     Text("Add")
                         .font(.headline)
                         .foregroundColor(Color("ShadedBlue"))
-//                        .padding(.all, 5)
-//                        .background(Color.blue)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(5)
                 }
-                    
-                
             }
             
             // Search bar
-            SearctBarView(search: $billViewModel.searchText, placeholder: "Seacrh Bill here")
-
+            if !billViewModel.bills.isEmpty {
+                SearctBarView(search: $billViewModel.searchText, placeholder: "Seacrh Bill here")
+            }
+            
             List {
                 if billViewModel.bills.isEmpty {
-                    ListNotFound(text: "No Items Yet", size: 100, spacing: 10)
+//                    ListNotFound(text: "No Items Yet", size: 50, spacing: 10)
+                    ListNotFound(size: 36, spacing: 30)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, -48)
                 }else{
                     ForEach(billViewModel.filteredBills, id: \.id) { bill in
                         HStack {
@@ -110,10 +96,10 @@ struct TransactionListView: View {
                                         .font(.footnote)
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(.systemGray))
-                                    Text("x \(personViewModel.people.filter { $0.bills.contains(where: { $0.id == bill.id }) }.count)")
-                                        .font(.footnote)
-                                        .fontWeight(.regular)
-                                        .foregroundColor(Color(.systemGray))
+//                                    Text("x\(personViewModel.people.filter { $0.bills.contains(where: { $0.id == bill.id }) }.count)")
+//                                        .font(.footnote)
+//                                        .fontWeight(.regular)
+//                                        .foregroundColor(Color(.systemGray))
                                 }
                                 .padding(.horizontal, 5)
                                 
@@ -123,28 +109,22 @@ struct TransactionListView: View {
                                     VStack(alignment: .trailing, spacing: 5) {
                                         let people = personViewModel.people
                                             .filter { $0.bills.contains(where: { $0.id == bill.id }) }
-                                            .map { $0.name }
 
-                                        LazyVGrid(
-                                            columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: min(people.count, 3)),
-                                            spacing: 5
-                                        ) {
-                                            ForEach(people.reversed(), id: \.self) { person in
-                                                HStack {
-                                                    Spacer()
-                                                    Text(person.prefix(1))
-                                                        .frame(minWidth: 30)
-                                                        .lineLimit(1)
-                                                        .truncationMode(.tail)
-                                                        .padding(.vertical, 5)
-                                                        .padding(.horizontal, 8)
+                                        HStack(spacing: -10) {
+                                            ForEach(people, id: \.id) { person in
+                                                ZStack {
+                                                    Circle()
+                                                        .fill(person.color.opacity(0.7))
+                                                        .frame(width: 30, height: 30)
                                                         .overlay(
-                                                            RoundedRectangle(cornerRadius: 8)
-                                                                .stroke(Color.blue, lineWidth: 2)
+                                                            Circle()
+                                                                .stroke(Color.white, lineWidth: 2)
                                                         )
-                                                        .cornerRadius(8)
-                                                        .font(.caption2)
-                                                        .foregroundColor(.blue)
+                                                    
+                                                    Text(person.name.prefix(1).uppercased())
+                                                        .font(.footnote)
+                                                        .fontWeight(.bold)
+                                                        .foregroundColor(.white)
                                                 }
                                             }
                                         }
@@ -154,29 +134,27 @@ struct TransactionListView: View {
                             }
                             
                             Spacer()
-            //
-
                             
                         }.onTapGesture {
                             toggleAndAssignBill(bill)
                         }
                         .padding(.vertical)
-            //            .padding(.horizontal)
-            //            .background(Color.gray.opacity(0.1))
                         .listRowInsets(EdgeInsets())
-                        
                     }
-                    
+                    .onDelete(perform: billViewModel.removeBill)
                 }
             }
-                        .listStyle(PlainListStyle())
-                        .padding(.horizontal, 0)
+            .listStyle(PlainListStyle())
+            .padding(.horizontal, 0)
 
         }
-        .padding()
+//        .border(Color.blue)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 16)
         .background(Color.white)
-        .cornerRadius(15)
-        .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+        .cornerRadius(8)
+        
+//        .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
         .sheet(isPresented: $isAddPersonViewPresented){
             AddBillView(billViewModel: billViewModel)
                 .presentationDetents([.medium])
@@ -193,25 +171,45 @@ struct TransactionListView: View {
         
         // Additional fee container
         HStack {
-            Image(systemName: "plus")
-            Text("Add Additional Fee")
-                .font(.footnote)
+            Image(systemName: "dollarsign.circle.fill")
+                .font(.system(size: 20)) // Increase size
+                .imageScale(.large)
+            
+            Text(billViewModel.taxPercentage > 0 &&  billViewModel.additionalFee > 0  ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%, Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : billViewModel.taxPercentage > 0 ? "Tax: \(String(format: "%.2f", billViewModel.taxPercentage))%" : billViewModel.additionalFee > 0 ? "Additional Fee: \(formatToRupiah(billViewModel.additionalFee))" : "Any other additional fee?")
+                .font(.callout)
+                .foregroundStyle(Color("ShadedBlue"))
                 .fontWeight(.regular)
+            
+            Spacer ()
+            
+            if billViewModel.taxPercentage > 0 ||  billViewModel.additionalFee > 0 {
+                Image(systemName: "x.circle.fill")
+                    .foregroundStyle(.gray)
+                    .onTapGesture {
+                    billViewModel.taxPercentage = 0
+                    billViewModel.additionalFee = 0
+                }
+            } else{
+                Image(systemName: "plus") .foregroundStyle(Color("ShadedBlue"))
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 8)
-        .padding(.horizontal, 4)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.blue, lineWidth: 2)
-        )
+        .padding(.horizontal, 16)
+        .background(Color.blue.opacity(0.1))
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 8)
+//                .stroke(Color.blue, lineWidth: 2)
+//        )
         .foregroundColor(.blue)
         .foregroundColor(Color("ShadedBlue"))
         .cornerRadius(8)
-        .frame(maxWidth: .infinity, alignment: .leading)
         .onTapGesture {
             isAddAdditionalFee = true
         }
+//        .border(Color.blue)
     }
+
 }
 
 
