@@ -13,6 +13,7 @@ struct AssignBillView: View {
     @ObservedObject var billViewModel: BillObjectModel
     @ObservedObject var historyViewModel: HistoryObjectModel
     @State var billsName: String = ""
+    @State var isFilled: Bool = false
     
     @State var addedHistory : HistoryModel? = nil
     
@@ -28,23 +29,42 @@ struct AssignBillView: View {
                 
                 // People
                 // Title named
-                HStack{
-                    TextField("Bill Title", text: $billsName)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .frame(width: 150)
-                        .textFieldStyle(.plain)
-                        .autocorrectionDisabled(true)
-                        .multilineTextAlignment(.center)
-                    
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
+//                HStack{
+//                    TextField("Bill Title", text: $billsName)
+//                        .font(.headline)
+//                        .fontWeight(.semibold)
+//                        .frame(width: 150)
+//                        .textFieldStyle(.plain)
+//                        .autocorrectionDisabled(true)
+//                        .multilineTextAlignment(.center)
+//                    
+//                }
+//                .frame(maxWidth: .infinity, alignment: .center)
                 
                 Divider()
                     .fontWeight(.semibold)
                     .background(Color.black)
                     .padding(.bottom)
                     .padding(.top)
+                
+                HStack{
+                    TextField("SplitBill#1", text: $billsName)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .frame(width: billsName.isEmpty ? 80 : 200)
+                        .textFieldStyle(.plain)
+                        .autocorrectionDisabled(true)
+                        .multilineTextAlignment(.center)
+                        
+                    
+                    if billsName.isEmpty {
+                        Image(systemName: "pencil.line")
+                            .foregroundStyle(Color.gray)
+                    }
+                    
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                
                 
                 VStack {
                     // Search bar
@@ -54,7 +74,7 @@ struct AssignBillView: View {
                     PeopleListView(personViewModel: personViewModel)
                 }
                 .padding(.horizontal, 10)
-                .padding(.vertical, 8)
+                .padding(.vertical, 16)
                 .background(Color.white)
                 .cornerRadius(15)
 //                .border(Color.blue)

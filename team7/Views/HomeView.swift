@@ -93,18 +93,30 @@ struct HomeView: View {
                     .scrollContentBackground(.hidden)
                     
                     // Navigation button
-                    NavigationLink(destination: AssignBillView(personViewModel: personViewModel, billViewModel: billViewModel, historyViewModel: historyViewModel)) {
-                       Text(historyViewModel.historyObjects.isEmpty ? "Start Split Your Bill" : "+ Split More Bills")
-                           .frame(maxWidth: .infinity)
-                           .padding()
-                           .background(Color("Blue"))
-                           .foregroundColor(.white)
-                           .fontWeight(.bold)
-                           .cornerRadius(10)
-                   }
-                   .buttonStyle(.plain)
-                   .padding(.horizontal, historyViewModel.historyObjects.isEmpty ? 86 : 0)
-                   .padding(.bottom, historyViewModel.historyObjects.isEmpty ? 102 : 20)
+                    NavigationLink(destination: AssignBillView(
+                        personViewModel: personViewModel,
+                        billViewModel: billViewModel,
+                        historyViewModel: historyViewModel
+                    )
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Bill Detail")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .baselineOffset(-50)
+                        }
+                    }) {
+                        Text(historyViewModel.historyObjects.isEmpty ? "Start Split Your Bill" : "+ Split More Bills")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color("Blue"))
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, historyViewModel.historyObjects.isEmpty ? 86 : 0)
+                    .padding(.bottom, historyViewModel.historyObjects.isEmpty ? 102 : 20)
                     
                 }
                 // MARK: Make it full in weight phone
